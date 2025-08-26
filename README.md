@@ -101,5 +101,5 @@ Nest is [MIT licensed](LICENSE).
 
 ---
 
-**Author:** [Kamil Myśliwiec](https://kamilmysliwiec.com)  
+**Author:** [Kwadw0] 
 **Framework:** [NestJS](https://nestjs.com/)
