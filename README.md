@@ -1,73 +1,105 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Watermark API Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS-based API for uploading images, applying text watermarks, and storing image metadata using MongoDB and Supabase Storage.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- Upload images via REST API (with Swagger UI support)
+- Apply custom text watermarks to images using [sharp](https://github.com/lovell/sharp)
+- Store watermarked images in [Supabase Storage](https://supabase.com/storage)
+- Store image metadata (including public URL) in MongoDB
+- Retrieve all watermarks or a single watermark by ID
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tech Stack
+
+- [NestJS](https://nestjs.com/) (Node.js framework)
+- [Mongoose](https://mongoosejs.com/) (MongoDB ODM)
+- [Supabase Storage](https://supabase.com/storage) (for file storage)
+- [sharp](https://github.com/lovell/sharp) (image processing)
+- [Swagger](https://swagger.io/) (API documentation)
 
 ## Installation
 
 ```bash
-$ yarn install
+# Install dependencies
+yarn install
+# or
+npm install
 ```
 
-## Running the app
+## Environment Variables
+
+Create a `.env` file in the project root with the following:
+
+```
+SUPABASE_URL=your-supabase-url
+SUPABASE_KEY=your-supabase-service-role-key
+```
+
+- The Supabase bucket (e.g., `watermark`) must exist in your Supabase project.
+- The bucket should be set to "public" for direct image access, or use signed URLs for private buckets.
+
+## Running the App
 
 ```bash
 # development
-$ yarn run start
+yarn run start
 
 # watch mode
-$ yarn run start:dev
+yarn run start:dev
 
 # production mode
-$ yarn run start:prod
+yarn run start:prod
 ```
 
-## Test
+## API Usage
 
-```bash
-# unit tests
-$ yarn run test
+### Upload an Image with Watermark
 
-# e2e tests
-$ yarn run test:e2e
+- **Endpoint:** `POST /watermark`
+- **Consumes:** `multipart/form-data`
+- **Body:**
+  - `text` (string): The watermark text
+  - `picture` (file): The image file
 
-# test coverage
-$ yarn run test:cov
+### Get All Watermarks
+
+- **Endpoint:** `GET /watermark`
+
+### Get a Watermark by ID
+
+- **Endpoint:** `GET /watermark/:id`
+
+## Swagger UI
+
+API documentation and file upload are available at:  
+`http://localhost:3000/api` (default)
+
+
+## Project Structure
+
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+src/
+  watermark/
+    watermark.controller.ts
+    watermark.service.ts
+    entities/
+      watermark.entity.ts
+    dto/
+      create-watermark.dto.ts
+      update-watermark.dto.ts
+  fileManagement/
+    filemanagement.service.ts
+    filemanagement.module.ts
+  util/
+    watermark.ts
+```
 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+---
+
+**Author:** [Kamil Myśliwiec](https://kamilmysliwiec.com)  
+**Framework:** [NestJS](https://nestjs.com/)
